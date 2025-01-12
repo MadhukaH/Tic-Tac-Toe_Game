@@ -51,7 +51,16 @@ npm run build
 # or
 yarn build
 ```
-The output will be in the `dist` directory.
+The output will be in the `dist` directory. You can serve it with a static server or deploy it to a hosting service.
+
+## Testing
+
+To run the tests, use the following command:
+```sh
+npm test
+# or
+yarn test
+```
 
 ## Available Plugins
 
