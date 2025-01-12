@@ -11,6 +11,8 @@ const TicTacToe = () => {
     tie: 0,
     computer: 0
   });
+  const [gameMode, setGameMode] = useState('player-vs-computer'); // New state for game mode
+  const [currentPlayer, setCurrentPlayer] = useState('X'); // New state for current player
 
   const winningCombinations = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
@@ -78,10 +80,10 @@ const TicTacToe = () => {
   };
 
   const handleCellClick = (index) => {
-    if (board[index] || isGameOver || isComputerMoving) return;
+    if (board[index] || isGameOver || (gameMode === 'player-vs-computer' && isComputerMoving)) return;
 
     const newBoard = [...board];
-    newBoard[index] = 'X';
+    newBoard[index] = currentPlayer;
     setBoard(newBoard);
 
     const winner = checkWinner(newBoard);
@@ -95,25 +97,30 @@ const TicTacToe = () => {
       return;
     }
 
-    // Computer's turn
-    setIsComputerMoving(true);
-    const computerIndex = computerMove(newBoard);
-    if (computerIndex !== -1) {
-      setTimeout(() => {
-        newBoard[computerIndex] = 'O';
-        setBoard(newBoard);
+    if (gameMode === 'player-vs-computer') {
+      // Computer's turn
+      setIsComputerMoving(true);
+      const computerIndex = computerMove(newBoard);
+      if (computerIndex !== -1) {
+        setTimeout(() => {
+          newBoard[computerIndex] = 'O';
+          setBoard(newBoard);
 
-        const finalWinner = checkWinner(newBoard);
-        if (finalWinner) {
-          handleGameEnd(finalWinner);
-          return;
-        }
+          const finalWinner = checkWinner(newBoard);
+          if (finalWinner) {
+            handleGameEnd(finalWinner);
+            return;
+          }
 
-        if (isBoardFull(newBoard)) {
-          handleGameEnd(null);
-        }
-        setIsComputerMoving(false);
-      }, 500);
+          if (isBoardFull(newBoard)) {
+            handleGameEnd(null);
+          }
+          setIsComputerMoving(false);
+        }, 500);
+      }
+    } else {
+      // Player vs Player mode
+      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
     }
   };
 
@@ -129,6 +136,7 @@ const TicTacToe = () => {
     setTimeout(() => {
       setBoard(Array(9).fill(null));
       setIsGameOver(false);
+      setCurrentPlayer('X'); // Reset current player
     }, 1500);
   };
 
@@ -155,8 +163,21 @@ const TicTacToe = () => {
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center">
-        
-
+      {/* Game mode selection */}
+      <div className="mb-4 flex space-x-4">
+        <button
+          className={`px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 ${gameMode === 'player-vs-computer' ? 'bg-blue-600' : 'bg-gray-600'} text-white`}
+          onClick={() => setGameMode('player-vs-computer')}
+        >
+          Player vs Computer
+        </button>
+        <button
+          className={`px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 ${gameMode === 'player-vs-player' ? 'bg-blue-600' : 'bg-gray-600'} text-white`}
+          onClick={() => setGameMode('player-vs-player')}
+        >
+          Player vs Player
+        </button>
+      </div>
 
       {/* Game board */}
       <div className="w-96 h-96 bg-slate-400 grid grid-cols-3 grid-rows-3">
