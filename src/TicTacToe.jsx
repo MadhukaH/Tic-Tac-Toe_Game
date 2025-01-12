@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User } from 'lucide-react';
-import SplashCursor from './SplashCursor'
+import SplashCursor from './SplashCursor'; // Re-add this line
 
 const TicTacToe = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -102,21 +102,23 @@ const TicTacToe = () => {
       setIsComputerMoving(true);
       const computerIndex = computerMove(newBoard);
       if (computerIndex !== -1) {
-        setTimeout(() => {
-          newBoard[computerIndex] = 'O';
-          setBoard(newBoard);
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            newBoard[computerIndex] = 'O';
+            setBoard(newBoard);
 
-          const finalWinner = checkWinner(newBoard);
-          if (finalWinner) {
-            handleGameEnd(finalWinner);
-            return;
-          }
+            const finalWinner = checkWinner(newBoard);
+            if (finalWinner) {
+              handleGameEnd(finalWinner);
+              return;
+            }
 
-          if (isBoardFull(newBoard)) {
-            handleGameEnd(null);
-          }
-          setIsComputerMoving(false);
-        }, 500);
+            if (isBoardFull(newBoard)) {
+              handleGameEnd(null);
+            }
+            setIsComputerMoving(false);
+          }, 500);
+        });
       }
     } else {
       // Player vs Player mode
@@ -162,9 +164,12 @@ const TicTacToe = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center relative">
+      <div className="absolute inset-0 z-0">
+        <SplashCursor /> {/* Ensure this line is inside a div with absolute positioning */}
+      </div>
       {/* Game mode selection */}
-      <div className="mb-4 flex space-x-4">
+      <div className="mb-4 flex space-x-4 z-10">
         <button
           className={`px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 ${gameMode === 'player-vs-computer' ? 'bg-blue-600' : 'bg-gray-600'} text-white`}
           onClick={() => setGameMode('player-vs-computer')}
@@ -180,7 +185,7 @@ const TicTacToe = () => {
       </div>
 
       {/* Game board */}
-      <div className="w-96 h-96 bg-slate-400 grid grid-cols-3 grid-rows-3">
+      <div className="w-96 h-96 bg-slate-400 grid grid-cols-3 grid-rows-3 z-10">
         {board.map((cell, index) => (
           <Cell 
             key={index}
@@ -190,10 +195,9 @@ const TicTacToe = () => {
           />
         ))}
       </div>
-      
 
       {/* Score display */}
-      <div className="mt-8 flex items-center justify-center space-x-16 text-white">
+      <div className="mt-8 flex items-center justify-center space-x-16 text-white z-10">
         <div className="flex flex-col items-center">
           <div className="text-sm mb-2">PLAYER (×)</div>
           <div className="text-4xl">{scores.player}</div>
@@ -214,10 +218,6 @@ const TicTacToe = () => {
           <div className="text-gray-500 text-sm">1P</div>
         </div>
         
-      </div>
-
-      <div>
-      <SplashCursor />
       </div>
       
     </div>
