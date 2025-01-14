@@ -152,7 +152,7 @@ const TicTacToe = () => {
     return (
       <div
         onClick={onClick}
-        className={`w-full h-full flex items-center justify-center cursor-pointer border-gray-800 border-2 ${borderClasses}`}
+        className={`w-full h-full flex items-center justify-center cursor-pointer border-gray-800 border-2 ${borderClasses} transition-transform transform hover:scale-105`}
       >
         {value && (
           <span className="text-white text-4xl font-bold">
@@ -164,7 +164,7 @@ const TicTacToe = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center relative">
+    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black flex flex-col items-center justify-center relative">
       <div className="absolute inset-0 z-0">
         <SplashCursor /> {/* Ensure this line is inside a div with absolute positioning */}
       </div>
@@ -185,7 +185,7 @@ const TicTacToe = () => {
       </div>
 
       {/* Game board */}
-      <div className="w-96 h-96 bg-slate-400 grid grid-cols-3 grid-rows-3 z-10">
+      <div className="w-96 h-96 bg-slate-400 grid grid-cols-3 grid-rows-3 z-10 rounded-lg shadow-lg overflow-hidden">
         {board.map((cell, index) => (
           <Cell 
             key={index}
