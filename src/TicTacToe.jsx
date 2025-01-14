@@ -171,13 +171,13 @@ const TicTacToe = () => {
       {/* Game mode selection */}
       <div className="mb-4 flex space-x-4 z-10">
         <button
-          className={`px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 ${gameMode === 'player-vs-computer' ? 'bg-blue-600' : 'bg-gray-600'} text-white`}
+          className={`px-6 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${gameMode === 'player-vs-computer' ? 'bg-gradient-to-r from-blue-500 to-blue-700' : 'bg-gradient-to-r from-gray-500 to-gray-700'} text-white`}
           onClick={() => setGameMode('player-vs-computer')}
         >
           Player vs Computer
         </button>
         <button
-          className={`px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 ${gameMode === 'player-vs-player' ? 'bg-blue-600' : 'bg-gray-600'} text-white`}
+          className={`px-6 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${gameMode === 'player-vs-player' ? 'bg-gradient-to-r from-blue-500 to-blue-700' : 'bg-gradient-to-r from-gray-500 to-gray-700'} text-white`}
           onClick={() => setGameMode('player-vs-player')}
         >
           Player vs Player
