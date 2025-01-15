@@ -152,7 +152,7 @@ const TicTacToe = () => {
     return (
       <div
         onClick={onClick}
-        className={`w-full h-full flex items-center justify-center cursor-pointer border-gray-800 border-2 ${borderClasses} transition-transform transform hover:scale-105`}
+        className={`w-full h-full flex items-center justify-center cursor-pointer border-gray-800 border-2 ${borderClasses} transition-transform transform hover:scale-105 bg-gradient-to-r from-gray-700 to-gray-900`}
       >
         {value && (
           <span className="text-white text-4xl font-bold">
@@ -185,7 +185,7 @@ const TicTacToe = () => {
       </div>
 
       {/* Game board */}
-      <div className="w-96 h-96 bg-slate-400 grid grid-cols-3 grid-rows-3 z-10 rounded-lg shadow-lg overflow-hidden">
+      <div className="w-96 h-96 bg-gradient-to-r from-gray-800 to-gray-900 grid grid-cols-3 grid-rows-3 z-10 rounded-lg shadow-lg overflow-hidden">
         {board.map((cell, index) => (
           <Cell 
             key={index}
