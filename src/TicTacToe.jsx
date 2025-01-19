@@ -13,6 +13,7 @@ const TicTacToe = () => {
   });
   const [gameMode, setGameMode] = useState('player-vs-computer'); // New state for game mode
   const [currentPlayer, setCurrentPlayer] = useState('X'); // New state for current player
+  const [difficulty, setDifficulty] = useState('easy'); // New state for difficulty level
 
   const winningCombinations = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
@@ -37,46 +38,96 @@ const TicTacToe = () => {
   };
 
   const computerMove = (currentBoard) => {
-    // First try to win
-    for (let i = 0; i < 9; i++) {
-      if (!currentBoard[i]) {
-        const boardCopy = [...currentBoard];
-        boardCopy[i] = 'O';
-        if (checkWinner(boardCopy) === 'O') {
-          return i;
+    // Adjust computer move logic based on difficulty
+    if (difficulty === 'easy') {
+      // Easy mode: Random move
+      const availableMoves = currentBoard.map((cell, index) => cell === null ? index : null).filter(index => index !== null);
+      return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+    } else if (difficulty === 'hard') {
+      // Hard mode: Try to win or block, then random
+      // First try to win
+      for (let i = 0; i < 9; i++) {
+        if (!currentBoard[i]) {
+          const boardCopy = [...currentBoard];
+          boardCopy[i] = 'O';
+          if (checkWinner(boardCopy) === 'O') {
+            return i;
+          }
         }
       }
-    }
 
-    // Then block player from winning
-    for (let i = 0; i < 9; i++) {
-      if (!currentBoard[i]) {
-        const boardCopy = [...currentBoard];
-        boardCopy[i] = 'X';
-        if (checkWinner(boardCopy) === 'X') {
-          return i;
+      // Then block player from winning
+      for (let i = 0; i < 9; i++) {
+        if (!currentBoard[i]) {
+          const boardCopy = [...currentBoard];
+          boardCopy[i] = 'X';
+          if (checkWinner(boardCopy) === 'X') {
+            return i;
+          }
         }
       }
+
+      // Try to take center
+      if (!currentBoard[4]) return 4;
+
+      // Take any available corner
+      const corners = [0, 2, 6, 8];
+      const availableCorners = corners.filter(i => !currentBoard[i]);
+      if (availableCorners.length > 0) {
+        return availableCorners[Math.floor(Math.random() * availableCorners.length)];
+      }
+
+      // Take any available side
+      const sides = [1, 3, 5, 7];
+      const availableSides = sides.filter(i => !currentBoard[i]);
+      if (availableSides.length > 0) {
+        return availableSides[Math.floor(Math.random() * availableSides.length)];
+      }
+
+      return -1;
+    } else if (difficulty === 'very-hard') {
+      // Very hard mode: Optimal move
+      // First try to win
+      for (let i = 0; i < 9; i++) {
+        if (!currentBoard[i]) {
+          const boardCopy = [...currentBoard];
+          boardCopy[i] = 'O';
+          if (checkWinner(boardCopy) === 'O') {
+            return i;
+          }
+        }
+      }
+
+      // Then block player from winning
+      for (let i = 0; i < 9; i++) {
+        if (!currentBoard[i]) {
+          const boardCopy = [...currentBoard];
+          boardCopy[i] = 'X';
+          if (checkWinner(boardCopy) === 'X') {
+            return i;
+          }
+        }
+      }
+
+      // Try to take center
+      if (!currentBoard[4]) return 4;
+
+      // Take any available corner
+      const corners = [0, 2, 6, 8];
+      const availableCorners = corners.filter(i => !currentBoard[i]);
+      if (availableCorners.length > 0) {
+        return availableCorners[Math.floor(Math.random() * availableCorners.length)];
+      }
+
+      // Take any available side
+      const sides = [1, 3, 5, 7];
+      const availableSides = sides.filter(i => !currentBoard[i]);
+      if (availableSides.length > 0) {
+        return availableSides[Math.floor(Math.random() * availableSides.length)];
+      }
+
+      return -1;
     }
-
-    // Try to take center
-    if (!currentBoard[4]) return 4;
-
-    // Take any available corner
-    const corners = [0, 2, 6, 8];
-    const availableCorners = corners.filter(i => !currentBoard[i]);
-    if (availableCorners.length > 0) {
-      return availableCorners[Math.floor(Math.random() * availableCorners.length)];
-    }
-
-    // Take any available side
-    const sides = [1, 3, 5, 7];
-    const availableSides = sides.filter(i => !currentBoard[i]);
-    if (availableSides.length > 0) {
-      return availableSides[Math.floor(Math.random() * availableSides.length)];
-    }
-
-    return -1;
   };
 
   const handleCellClick = (index) => {
@@ -183,6 +234,30 @@ const TicTacToe = () => {
           Player vs Player
         </button>
       </div>
+
+      {/* Difficulty level selection */}
+      {gameMode === 'player-vs-computer' && (
+        <div className="mb-4 flex space-x-4 z-10">
+          <button
+            className={`px-6 py-3 rounded-full shadow-lg transition-transform transform hover:scale-110 ${difficulty === 'easy' ? 'bg-gradient-to-r from-green-400 to-green-600' : 'bg-gradient-to-r from-gray-500 to-gray-700'} text-white`}
+            onClick={() => setDifficulty('easy')}
+          >
+            Easy
+          </button>
+          <button
+            className={`px-6 py-3 rounded-full shadow-lg transition-transform transform hover:scale-110 ${difficulty === 'hard' ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' : 'bg-gradient-to-r from-gray-500 to-gray-700'} text-white`}
+            onClick={() => setDifficulty('hard')}
+          >
+            Hard
+          </button>
+          <button
+            className={`px-6 py-3 rounded-full shadow-lg transition-transform transform hover:scale-110 ${difficulty === 'very-hard' ? 'bg-gradient-to-r from-red-400 to-red-600' : 'bg-gradient-to-r from-gray-500 to-gray-700'} text-white`}
+            onClick={() => setDifficulty('very-hard')}
+          >
+            Very Hard
+          </button>
+        </div>
+      )}
 
       {/* Game board */}
       <div className="w-96 h-96 bg-gradient-to-r from-gray-800 to-gray-900 grid grid-cols-3 grid-rows-3 z-10 rounded-lg shadow-lg overflow-hidden">
