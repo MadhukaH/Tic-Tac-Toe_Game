@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User } from 'lucide-react';
+import { User, Sun, Moon } from 'lucide-react'; // Import Sun and Moon icons
 import SplashCursor from './SplashCursor'; // Re-add this line
 
 const TicTacToe = () => {
@@ -225,6 +225,15 @@ const TicTacToe = () => {
       <div className="absolute inset-0 z-0">
         <SplashCursor /> {/* Ensure this line is inside a div with absolute positioning */}
       </div>
+      {/* Dark mode and light mode buttons */}
+      <div className="absolute top-4 right-4 z-10">
+        <button
+          className="px-6 py-3 rounded-full shadow-lg transition-transform transform hover:scale-105 bg-gradient-to-r from-gray-500 to-gray-700 text-white flex items-center justify-center"
+          onClick={toggleDarkMode}
+        >
+          {isDarkMode ? <Sun className="text-yellow-400" size={24} /> : <Moon className="text-gray-400" size={24} />}
+        </button>
+      </div>
       {/* Game mode selection */}
       <div className="mb-4 flex space-x-4 z-10">
         <button
@@ -264,16 +273,6 @@ const TicTacToe = () => {
           </button>
         </div>
       )}
-
-      {/* Dark mode and light mode buttons */}
-      <div className="mb-4 flex space-x-4 z-10">
-        <button
-          className="px-6 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105 bg-gradient-to-r from-gray-500 to-gray-700 text-white"
-          onClick={toggleDarkMode}
-        >
-          Toggle Dark Mode
-        </button>
-      </div>
 
       {/* Game board */}
       <div className={`w-96 h-96 ${isDarkMode ? 'bg-gradient-to-r from-gray-800 to-gray-900' : 'bg-gradient-to-r from-gray-200 to-gray-400'} grid grid-cols-3 grid-rows-3 z-10 rounded-lg shadow-lg overflow-hidden`}>
