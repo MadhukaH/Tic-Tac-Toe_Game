@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dark-mode": "vite --mode dark",
+    "light-mode": "vite --mode light"
   },
   "dependencies": {
     "lucide-react": "^0.469.0",

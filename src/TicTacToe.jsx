@@ -14,6 +14,7 @@ const TicTacToe = () => {
   const [gameMode, setGameMode] = useState('player-vs-computer'); // New state for game mode
   const [currentPlayer, setCurrentPlayer] = useState('X'); // New state for current player
   const [difficulty, setDifficulty] = useState('easy'); // New state for difficulty level
+  const [isDarkMode, setIsDarkMode] = useState(false); // New state for dark mode
 
   const winningCombinations = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
@@ -193,6 +194,11 @@ const TicTacToe = () => {
     }, 1500);
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark', !isDarkMode);
+  };
+
   const Cell = ({ value, onClick, index }) => {
     let borderClasses = "border-white ";
     if (index < 3) borderClasses += "border-t-0 "; // top row
@@ -215,7 +221,7 @@ const TicTacToe = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-black flex flex-col items-center justify-center relative">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gradient-to-r from-gray-900 to-black' : 'bg-gradient-to-r from-white to-gray-300'} flex flex-col items-center justify-center relative`}>
       <div className="absolute inset-0 z-0">
         <SplashCursor /> {/* Ensure this line is inside a div with absolute positioning */}
       </div>
@@ -259,8 +265,18 @@ const TicTacToe = () => {
         </div>
       )}
 
+      {/* Dark mode and light mode buttons */}
+      <div className="mb-4 flex space-x-4 z-10">
+        <button
+          className="px-6 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105 bg-gradient-to-r from-gray-500 to-gray-700 text-white"
+          onClick={toggleDarkMode}
+        >
+          Toggle Dark Mode
+        </button>
+      </div>
+
       {/* Game board */}
-      <div className="w-96 h-96 bg-gradient-to-r from-gray-800 to-gray-900 grid grid-cols-3 grid-rows-3 z-10 rounded-lg shadow-lg overflow-hidden">
+      <div className={`w-96 h-96 ${isDarkMode ? 'bg-gradient-to-r from-gray-800 to-gray-900' : 'bg-gradient-to-r from-gray-200 to-gray-400'} grid grid-cols-3 grid-rows-3 z-10 rounded-lg shadow-lg overflow-hidden`}>
         {board.map((cell, index) => (
           <Cell 
             key={index}
